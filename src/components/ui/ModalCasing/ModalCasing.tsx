@@ -12,11 +12,26 @@ import {FC} from "react";
 interface IModalProps {
     children: React.ReactNode;
     isOpen: boolean;
-    onOpen: () => void;
+    onAction?: () => void;
+    actionTitle?: string;
     onClose: () => void;
 }
 
-export const ModalCasing: FC<IModalProps> = ({children, isOpen, onOpen, onClose}) => {
+export const ModalCasing: FC<IModalProps> = (
+    {
+        children,
+        isOpen,
+        onAction,
+        actionTitle,
+        onClose
+    }) => {
+
+    const secondaryButton =
+        onAction ?
+            <Button variant='ghost' onClick={onAction}>{actionTitle}</Button> :
+            null
+    ;
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
@@ -25,13 +40,14 @@ export const ModalCasing: FC<IModalProps> = ({children, isOpen, onOpen, onClose}
                 <ModalCloseButton />
                 <ModalBody>
                     Содержимое попапа
+                    {children}
                 </ModalBody>
 
                 <ModalFooter>
                     <Button colorScheme='blue' mr={3} onClick={onClose}>
-                        Close
+                        Ок
                     </Button>
-                    <Button variant='ghost'>Secondary Action</Button>
+                    {secondaryButton}
                 </ModalFooter>
             </ModalContent>
         </Modal>
