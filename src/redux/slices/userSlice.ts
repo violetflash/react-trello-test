@@ -5,8 +5,8 @@ interface IUser {
     isLoggedIn: boolean;
 }
 
-const initialState = {
-    user: "",
+const initialState: IUser = {
+    username: "",
     isLoggedIn: false,
 }
 
@@ -15,7 +15,7 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action: PayloadAction<string>) => {
-            state.user = action.payload;
+            state.username = action.payload;
             state.isLoggedIn = true;
         }
     }

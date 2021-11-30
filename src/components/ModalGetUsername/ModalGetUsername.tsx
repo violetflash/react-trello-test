@@ -1,27 +1,31 @@
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {Icon, Input, InputGroup, InputLeftElement} from "@chakra-ui/react";
 import {FaUser} from "react-icons/all";
 import {ModalCasing} from "../ui";
+import {useTypedDispatch} from "../../hooks/reduxHooks";
+import { setUser } from '../../redux';
 
 export const ModalGetUsername = () => {
+    const dispatch = useTypedDispatch();
     const [isOpen, setIsOpen] = useState<boolean>(true);
-    const [name, setName] = useState<string>("");
+    const [value, setValue] = useState<string>("");
 
     const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setName(event.target.value);
+        setValue(event.target.value);
     };
 
-    const getName = useCallback(() => {
-        console.log(name);
+    const setName = () => {
+        dispatch(setUser(value));
         setIsOpen(false);
-    }, [name]);
+    };
+
 
     return (
         <ModalCasing
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
             modalTitle="Введите свое имя:"
-            onAction={getName}
+            onAction={setName}
             actionTitle="Сохранить"
         >
             <InputGroup>

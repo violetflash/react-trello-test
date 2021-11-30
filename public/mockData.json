@@ -1,0 +1,22 @@
+[
+    {
+        "id": "0",
+        "title": "TODO",
+        "tasks": []
+    },
+    {
+        "id": "1",
+        "title": "In Progress",
+        "tasks": []
+    },
+    {
+        "id": "2",
+        "title": "Testing",
+        "tasks": []
+    },
+    {
+        "id": "3",
+        "title": "Done",
+        "tasks": []
+    }
+]
