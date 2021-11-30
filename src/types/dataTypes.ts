@@ -11,6 +11,7 @@ export interface IComment {
 }
 
 export interface ICard extends ICommonProps {
+    columnTitle: string;
     description: string;
     comments: IComment[];
 }

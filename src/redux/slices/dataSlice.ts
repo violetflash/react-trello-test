@@ -15,7 +15,7 @@ export const getInitialData = createAsyncThunk(
 );
 
 const initialState: IAppState = {
-    columns: [],
+    columns: [] as IColumn[],
     isLoading: false,
     error: null
 }
