@@ -23,10 +23,10 @@ export const Desk = () => {
 
     if (!columns.length) return null;
 
-    const columnsView = columns.map(col => <Column {...col}/>)
+    const columnsView = columns.map(col => <Column key={col.id} {...col}/>)
 
     return (
-        <Flex flexWrap="wrap" ml="-20px">
+        <Flex flexWrap="wrap" ml="-20px" p="50px 20px 20px" align="flex-start">
             {columnsView}
         </Flex>
     )

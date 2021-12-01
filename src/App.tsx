@@ -9,7 +9,7 @@ export const App = () => {
             <Desk/>
             <ModalGetUsername/>
             <Portal>
-                <ColorModeSwitcher position="fixed" right="40px" top="50%"/>
+                <ColorModeSwitcher position="fixed" right="40px" top="5px"/>
             </Portal>
         </ChakraProvider>
     );
