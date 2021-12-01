@@ -9,6 +9,7 @@ export const AddNewCardButton = () => {
     if (showForm) {
         return <AddCardForm onClose={() => setShowForm(false)}/>
     }
+
     return (
         <Button
             onClick={() => setShowForm(true)}

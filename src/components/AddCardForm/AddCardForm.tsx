@@ -13,6 +13,7 @@ export const AddCardForm = ({onClose}: IAddCardForm) => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         if (!value) {
             inputRef.current?.focus();
             return;
@@ -21,12 +22,9 @@ export const AddCardForm = ({onClose}: IAddCardForm) => {
         onClose();
     };
 
-
-
     return (
         <form onSubmit={handleSubmit}>
             <Input
-                // variant='outline'
                 placeholder='Название карточки'
                 ref={inputRef}
                 mb="20px"
@@ -43,7 +41,6 @@ export const AddCardForm = ({onClose}: IAddCardForm) => {
                     onClick={onClose}
                 />
             </Flex>
-
         </form>
     )
 };

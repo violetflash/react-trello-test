@@ -24,7 +24,9 @@ export const dataSlice = createSlice({
     name: "dataSlice",
     initialState,
     reducers: {
-
+        hydrate: (state, action: PayloadAction<IAppState>) => {
+            return action.payload;
+        },
     },
     extraReducers: {
         [getInitialData.pending.type]: (state) => {

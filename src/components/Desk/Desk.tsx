@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useTypedDispatch, useTypedSelector} from "../../hooks/reduxHooks";
 import {getInitialData} from "../../redux";
-import {IColumn} from "../../types";
-import {Flex, HStack} from "@chakra-ui/react";
+
+import {Flex} from "@chakra-ui/react";
 import {Column} from "../Column/Column";
 
 export const Desk = () => {
-    const {columns, isLoading} = useTypedSelector(state => state.dataSlice);
+    const {columns} = useTypedSelector(state => state.dataSlice);
     const dispatch = useTypedDispatch();
 
     useEffect(() => {
@@ -26,7 +26,7 @@ export const Desk = () => {
     const columnsView = columns.map(col => <Column key={col.id} {...col}/>)
 
     return (
-        <Flex flexWrap="wrap" ml="-20px" p="50px 20px 20px" align="flex-start">
+        <Flex flexWrap="wrap" ml="-20px" p="0 20px 20px" align="flex-start">
             {columnsView}
         </Flex>
     )

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Editable, EditableInput, EditablePreview, Flex, Text, VStack} from "@chakra-ui/react";
+import {Editable, EditableInput, EditablePreview, Flex, VStack} from "@chakra-ui/react";
 import {IColumn} from "../../types";
 import {Card} from "../Card/Card";
 import {AddNewCardButton} from "../AddNewCardButton/AddNewCardButton";
