@@ -10,8 +10,15 @@ export interface IComment {
     text: string;
 }
 
+export interface ICardInitialProps {
+    title: string;
+    columnId: string;
+    author: string;
+}
+
 export interface ICard extends ICommonProps {
-    columnTitle: string;
+    author: string;
+    columnId: string;
     description: string;
     comments: IComment[];
 }
@@ -24,4 +31,13 @@ export interface IAppState {
     columns: IColumn[];
     isLoading: boolean;
     error: string | null;
+}
+
+export const initialCard: ICard = {
+    author: "",
+    id: "",
+    columnId: "",
+    title: "",
+    description: "",
+    comments: []
 }

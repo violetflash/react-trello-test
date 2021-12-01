@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react';
 import {useTypedDispatch, useTypedSelector} from "../../hooks/reduxHooks";
-import {getInitialData} from "../../redux";
+import {getInitialData, setDataFromLS} from "../../redux";
 
 import {Flex} from "@chakra-ui/react";
 import {Column} from "../Column/Column";
+import {LS_TRELLO_DATA_KEY} from "../../utils/constants";
 
 export const Desk = () => {
     const {columns} = useTypedSelector(state => state.dataSlice);
@@ -11,13 +12,13 @@ export const Desk = () => {
 
     useEffect(() => {
         //check localStorage and if nothing is there:
-        const data = localStorage.getItem('trello-data');
-        console.log(data);
 
-        if (!data) {
+        if (!localStorage.getItem(LS_TRELLO_DATA_KEY)) {
             dispatch(getInitialData());
             return;
         }
+
+        dispatch(setDataFromLS());
 
     }, [dispatch]);
 

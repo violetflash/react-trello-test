@@ -1,25 +1,36 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Editable, EditableInput, EditablePreview, Flex, VStack} from "@chakra-ui/react";
 import {IColumn} from "../../types";
 import {Card} from "../Card/Card";
-import {AddNewCardButton} from "../AddNewCardButton/AddNewCardButton";
+// import {AddNewCardButton} from "../AddNewCardButton/AddNewCardButton";
+import {useTypedDispatch, useTypedSelector} from "../../hooks/reduxHooks";
+import {addNewCard, updateColumnTitle} from '../../redux';
+import { AddNewItemButton } from '../AddNewItemButton/AddNewItemButton';
 
 export const Column = ({id, title, cards}:IColumn) => {
-
+    const dispatch = useTypedDispatch();
+    const {username} = useTypedSelector(state => state.user);
     const cardsView = cards.map(elem => <Card key={elem.id} {...elem}/>)
 
     const handleTitleChange = (id: string, nextValue: string) => {
         console.log(nextValue);
         console.log(id);
+        dispatch(updateColumnTitle({id, title: nextValue}));
     }
+
+    const handleAddCard = useCallback((value) => {
+        dispatch(addNewCard({columnId: id, title: value, author: username}))
+    }, [dispatch, id, username]);
+
 
     return (
         <Flex
             w={['calc(100%)', 'calc(100% / 2 - 20px)', 'calc(100% / 3 - 20px)', 'calc(100% / 4 - 20px)']}
             m="0 0 40px 20px"
             direction="column"
+            align="flex-start"
             shadow="lg"
-            bg="gray.200"
+            bg="gray.300"
             color="black"
             p="15px"
             rounded="md"
@@ -34,10 +45,15 @@ export const Column = ({id, title, cards}:IColumn) => {
                 <EditablePreview  w="full"/>
                 <EditableInput  />
             </Editable>
-            <VStack>
+            <VStack mb="15px" w="full">
                 {cardsView}
             </VStack>
-            <AddNewCardButton/>
+            {/*<AddNewCardButton colId={id}/>*/}
+            <AddNewItemButton
+                placeholder="Ввести заголовок для карточки"
+                text="Добавить карточку"
+                onAdd={handleAddCard}
+            />
         </Flex>
     )
 };
