@@ -1,21 +1,17 @@
 import {Badge, Box, Flex, Text} from "@chakra-ui/react";
 import {useTypedDispatch, useTypedSelector} from "../../../hooks/reduxHooks";
 import {getDataFromLS, getTitleByColumnId} from "../../../utils/functions";
-import {closeCard, updateCardDescription, updateCardTitle} from "../../../redux";
+import {closeCard, updateCard, updateCardDescription, updateCardTitle} from "../../../redux";
 import {ModalCasing} from "../../ui";
 import {AddNewItemButton} from "../../AddNewItemButton/AddNewItemButton";
 import {EditableField} from "../../forms";
-import {useEffect} from "react";
+
 
 
 export const ModalCardView = () => {
     const dispatch = useTypedDispatch();
     const {isOpened, card} = useTypedSelector(state => state.modalCard);
     const {username} = useTypedSelector(state => state.user);
-
-    useEffect(() => {
-
-    }, [card.description])
 
     if (!isOpened) return null;
 
@@ -26,11 +22,14 @@ export const ModalCardView = () => {
     }
 
     const handleAddDescription = (value: string) => {
-        console.log("Добавить описание карточки")
         dispatch(updateCardDescription({
             columnId: card.columnId,
             cardId: card.id,
-            value
+            value: value
+        }));
+        dispatch(updateCard({
+            ...card,
+            description: value
         }))
     }
 
@@ -56,6 +55,7 @@ export const ModalCardView = () => {
                     isDisabled={!username}
                     variant="description"
                     text={card.description ? card.description : "Добавить более подробное описание"}
+                    description={card.description}
                     onAdd={handleAddDescription}
                     placeholder="Добавить более подробное описание"
                     buttonText="Сохранить"

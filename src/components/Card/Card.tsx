@@ -1,7 +1,7 @@
 import React from 'react';
 import {ICard} from "../../types";
-import {Box, Flex, Icon, Text, useColorModeValue} from "@chakra-ui/react";
-import {ChatIcon} from '@chakra-ui/icons';
+import {Box, Flex, HStack, Icon, Text, Tooltip, useColorModeValue} from "@chakra-ui/react";
+import {ChatIcon, HamburgerIcon} from '@chakra-ui/icons';
 import {useTypedDispatch} from "../../hooks/reduxHooks";
 import {openCard} from "../../redux";
 
@@ -26,12 +26,23 @@ export const Card = (props: ICard) => {
             onClick={handleOpenCard}
         >
             <Text mb="5px" textAlign="left">{props.title}</Text>
-            {props.comments.length > 0 &&
-            <Flex align="center">
-              <Icon as={ChatIcon} color="gray.500"/>
-              <Text as="span" ml="10px">{props.comments.length}</Text>
-            </Flex>
-            }
+            <HStack align="center">
+                {props.description &&
+                <Tooltip label='Есть описание' fontSize='md'>
+                  <HamburgerIcon color="gray.600" />
+                </Tooltip>
+                    // <Icon as={HamburgerIcon} color="gray.500"/>
+                }
+                {props.comments.length === 0 &&
+                <Tooltip label='Есть комментарии' fontSize='md'>
+                  <Flex align="center">
+                    <ChatIcon color="gray.500" />
+                    <Text as="span" ml="5px">{props.comments.length}</Text>
+                  </Flex>
+                </Tooltip>
+                }
+
+            </HStack>
         </Box>
     )
 };

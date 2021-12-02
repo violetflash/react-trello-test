@@ -8,21 +8,36 @@ import {useFocus} from "../../../hooks/useFocus";
 interface IAddForm extends IAddFormBase {
     onClose: () => void;
     isOpen: boolean;
+    text?: string;
+    isEmptyAllowed?: boolean;
+    description?: string;
 }
 
-export const AddForm = ({isOpen, onClose, onAdd, placeholder, buttonText = "Добавить"}: IAddForm) => {
-    const [value, setValue] = useState("");
+export const AddForm = (
+    {
+        isOpen,
+        onClose,
+        onAdd,
+        placeholder,
+        text,
+        description,
+        buttonText = "Добавить",
+        isEmptyAllowed = false,
+    }: IAddForm) => {
+
+    const [value, setValue] = useState(() => description || "");
     const inputRef = useFocus();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!value) {
+        if (!isEmptyAllowed && !value) {
             inputRef.current?.focus();
             return;
         }
 
-        onAdd(value);
+
+        onAdd(value.trim());
         onClose();
     };
 
@@ -36,6 +51,7 @@ export const AddForm = ({isOpen, onClose, onAdd, placeholder, buttonText = "До
                     mb="20px"
                     _placeholder={{color: "black"}}
                     borderColor="gray.300"
+                    value={value}
                     bg="white"
                     color="black"
                     _hover={{borderColor: "blue.200"}}

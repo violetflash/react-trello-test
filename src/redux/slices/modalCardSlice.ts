@@ -22,8 +22,11 @@ export const modalCardSlice = createSlice({
         closeCard: (state) => {
             state.isOpened = false;
             state.card = {} as ICard;
+        },
+        updateCard: (state, action: PayloadAction<ICard>) => {
+            state.card = action.payload;
         }
     }
 });
 
-export const {openCard, closeCard} = modalCardSlice.actions;
+export const {openCard, closeCard, updateCard} = modalCardSlice.actions;

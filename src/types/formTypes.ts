@@ -7,5 +7,6 @@ export interface IAddFormBase {
 export interface IAddNewItemButton extends IAddFormBase {
     text: string;
     variant?: "description";
+    description?: string;
     isDisabled?: boolean;
 }
