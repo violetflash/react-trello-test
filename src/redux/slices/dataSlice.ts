@@ -1,10 +1,9 @@
 import {createAsyncThunk, createSlice, nanoid, PayloadAction} from '@reduxjs/toolkit';
 import {
-    IAddCommentProps,
     IAppState,
     ICardInitialProps,
     ICardUpdatingProps,
-    IColumn,
+    IColumn, IComment,
     ICommonProps,
     initialCard
 } from "../../types";
@@ -42,8 +41,24 @@ export const addNewCard = createAsyncThunk(
         try {
             const newCard = {...initialCard, id: nanoid(), ...cardData};
             const data = getDataFromLS();
-            const index = findItemIndexById(cardData.columnId, data);
-            data[index].cards.push(newCard);
+            const columnIndex = findItemIndexById(cardData.columnId, data);
+            data[columnIndex].cards.push(newCard);
+            writeDataToLS(data);
+            return data;
+        } catch (e: any) {
+            return thunkAPI.rejectWithValue(e.message);
+        }
+    }
+);
+
+export const deleteCard = createAsyncThunk(
+    "dataSlice/deleteCard",
+    async (cardData: {columnId: string, cardId: string,}, thunkAPI) => {
+        try {
+            const data = getDataFromLS();
+            const columnIndex = findItemIndexById(cardData.columnId, data);
+            const cardIndex = findItemIndexById(cardData.cardId, data[columnIndex].cards);
+            data[columnIndex].cards.splice(cardIndex, 1);
             writeDataToLS(data);
             return data;
         } catch (e: any) {
@@ -54,14 +69,15 @@ export const addNewCard = createAsyncThunk(
 
 export const addNewCardComment = createAsyncThunk(
     "dataSlice/addNewCardComment",
-    async (cardData: IAddCommentProps, thunkAPI) => {
+    async (cardData: IComment, thunkAPI) => {
         try {
-            // const newCard = {...initialCard, id: nanoid(), ...cardData};
             const data = getDataFromLS();
             const columnIndex = findItemIndexById(cardData.columnId, data);
             const cardIndex = findItemIndexById(cardData.cardId, data[columnIndex].cards);
             data[columnIndex].cards[cardIndex].comments.push({
                 id: cardData.id,
+                cardId: cardData.id,
+                columnId: cardData.columnId,
                 author: cardData.author,
                 text: cardData.text
             });
@@ -73,6 +89,23 @@ export const addNewCardComment = createAsyncThunk(
     }
 );
 
+
+export const deleteComment = createAsyncThunk(
+    "dataSlice/deleteComment",
+    async (cardData: {id: string; cardId: string; columnId: string}, thunkAPI) => {
+        try {
+            const data = getDataFromLS();
+            const columnIndex = findItemIndexById(cardData.columnId, data);
+            const cardIndex = findItemIndexById(cardData.cardId, data[columnIndex].cards);
+            const commentIndex = findItemIndexById(cardData.id, data[columnIndex].cards[cardIndex].comments)
+            data[columnIndex].cards[cardIndex].comments.splice(commentIndex, 1);
+            writeDataToLS(data);
+            return data;
+        } catch (e: any) {
+            return thunkAPI.rejectWithValue(e.message);
+        }
+    }
+);
 
 export const updateColumnTitle = createAsyncThunk(
     "dataSlice/updateColumnTitle",
@@ -117,6 +150,23 @@ export const updateCardDescription = createAsyncThunk(
             const cardIndex = findItemIndexById(cardData.cardId, data[columnIndex].cards);
 
             data[columnIndex].cards[cardIndex].description = cardData.value;
+            writeDataToLS(data);
+            return data;
+        } catch (e: any) {
+            return thunkAPI.rejectWithValue(e.message);
+        }
+    }
+);
+
+export const updateComment = createAsyncThunk(
+    "dataSlice/updateComment",
+    async (cardData: {id: string; cardId: string; columnId: string; value: string}, thunkAPI) => {
+        try {
+            const data = getDataFromLS();
+            const columnIndex = findItemIndexById(cardData.columnId, data);
+            const cardIndex = findItemIndexById(cardData.cardId, data[columnIndex].cards);
+            const commentIndex = findItemIndexById(cardData.id, data[columnIndex].cards[cardIndex].comments);
+            data[columnIndex].cards[cardIndex].comments[commentIndex].text = cardData.value;
             writeDataToLS(data);
             return data;
         } catch (e: any) {
@@ -179,5 +229,17 @@ export const dataSlice = createSlice({
         [addNewCardComment.pending.type]: setLoading,
         [addNewCardComment.fulfilled.type]: setData,
         [addNewCardComment.rejected.type]: setError,
+
+        [deleteCard.pending.type]: setLoading,
+        [deleteCard.fulfilled.type]: setData,
+        [deleteCard.rejected.type]: setError,
+
+        [deleteComment.pending.type]: setLoading,
+        [deleteComment.fulfilled.type]: setData,
+        [deleteComment.rejected.type]: setError,
+
+        [updateComment.pending.type]: setLoading,
+        [updateComment.fulfilled.type]: setData,
+        [updateComment.rejected.type]: setError,
     }
 });

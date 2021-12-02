@@ -7,14 +7,8 @@ export interface ICommonProps {
 export interface IComment {
     id: string;
     author: string;
-    text: string;
-}
-
-export interface IAddCommentProps {
-    id: string;
     cardId: string;
     columnId: string;
-    author: string;
     text: string;
 }
 

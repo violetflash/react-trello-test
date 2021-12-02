@@ -1,14 +1,20 @@
-import {Badge, Box, Flex, Text} from "@chakra-ui/react";
+import {Badge, Box, Button, Flex, Menu, MenuButton, MenuItem, MenuList, Text} from "@chakra-ui/react";
 import {useTypedDispatch, useTypedSelector} from "../../../hooks/reduxHooks";
 import {getDataFromLS, getTitleByColumnId} from "../../../utils/functions";
-import {addNewCardComment, closeCard, updateCard, updateCardDescription, updateCardTitle} from "../../../redux";
+import {
+    addNewCardComment, closeAlert,
+    closeCard,
+    deleteCard, openAlert,
+    updateCard,
+    updateCardDescription,
+    updateCardTitle
+} from "../../../redux";
 import {ModalCasing} from "../../ui";
 import {AddNewItemButton} from "../../AddNewItemButton/AddNewItemButton";
 import {EditableField} from "../../forms";
 import {Comment} from "../../Comment/Comment";
 import {nanoid} from "@reduxjs/toolkit";
-
-
+import {SettingsIcon} from "@chakra-ui/icons";
 
 export const ModalCardView = () => {
     const dispatch = useTypedDispatch();
@@ -58,9 +64,40 @@ export const ModalCardView = () => {
         }));
     };
 
+    const handleCloseAlert = () => {
+        dispatch(closeAlert());
+    }
+
+    const handleOpenAlert = () => {
+        dispatch(openAlert({
+            text: "Удалить карточку?",
+            onConfirm: handleDeleteCard,
+            confirmText:"Да",
+            declineText:"Нет",
+            onClose: handleCloseAlert
+        }))
+    }
+
+    const handleDeleteCard = () => {
+        dispatch(deleteCard({
+            cardId: card.id,
+            columnId: card.columnId,
+        }));
+        dispatch(closeCard());
+    }
+
     return (
         <ModalCasing onClose={handleClose} isOpen={isOpened}>
-            <EditableField m="30px 0 0" onChange={handleTitleChange} defaultValue={card.title} isDisabled={!username} />
+            <Flex align="center" justify="space-between" m="40px 0 0">
+                <EditableField onChange={handleTitleChange} defaultValue={card.title} isDisabled={!username} />
+                <Menu>
+                    <MenuButton as={Button} rightIcon={<SettingsIcon />} variant="ghost"/>
+                    <MenuList>
+                        <MenuItem onClick={handleOpenAlert} isDisabled={!username}>Delete</MenuItem>
+                    </MenuList>
+                </Menu>
+            </Flex>
+
             <Flex align="center" mb="30px">
                 в колонке:
                 <Badge colorScheme="green" ml="15px">{title}</Badge>
@@ -86,10 +123,11 @@ export const ModalCardView = () => {
                     buttonText="Добавить"
                 />
                 <Box mt="20px">
-                    {[...card.comments].reverse().map(comment => <Comment key={comment.id} {...comment}/>)}
+                    {[...card.comments].reverse().map(comment => (
+                        <Comment key={comment.id} {...comment} cardId={card.id} columnId={card.columnId} />
+                    ))}
                 </Box>
             </Box>
-
         </ModalCasing>
     )
 };

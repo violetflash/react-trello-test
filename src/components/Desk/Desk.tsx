@@ -11,7 +11,6 @@ export const Desk = () => {
     const dispatch = useTypedDispatch();
 
     useEffect(() => {
-        //check localStorage and if nothing is there:
 
         if (!localStorage.getItem(LS_TRELLO_DATA_KEY)) {
             dispatch(getInitialData());

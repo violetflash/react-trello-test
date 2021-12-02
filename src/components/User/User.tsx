@@ -1,6 +1,7 @@
 import React from 'react';
-import {Text} from "@chakra-ui/react";
+import {Flex, Text} from "@chakra-ui/react";
 import {useTypedSelector} from "../../hooks/reduxHooks";
+import {UserAvatar} from "../UserAvatar/UserAvatar";
 
 interface IUserProps {
     p?: string;
@@ -9,10 +10,14 @@ interface IUserProps {
 
 export const User = (props: IUserProps) => {
     const {username} = useTypedSelector(state => state.user);
+    const name = username ? username : "Гость";
 
     return (
-        <Text {...props}>
-            {username ? username : "Гость"}
-        </Text>
+        <Flex {...props} align="center">
+            <UserAvatar username={name}/>
+            <Text ml="10px">
+                {name}
+            </Text>
+        </Flex>
     )
 };

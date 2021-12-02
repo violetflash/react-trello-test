@@ -41,7 +41,6 @@ export const Card = (props: ICard) => {
                   </Flex>
                 </Tooltip>
                 }
-
             </HStack>
         </Box>
     )
