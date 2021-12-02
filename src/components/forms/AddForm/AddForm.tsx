@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {Button, Flex, IconButton, Input, Fade, ScaleFade, Collapse, SlideFade,} from "@chakra-ui/react";
+import {Button, Flex, IconButton, Input, SlideFade,} from "@chakra-ui/react";
 import {CloseIcon} from "@chakra-ui/icons";
-import {useFocus} from "../../hooks/useFocus";
-import {IAddFormBase} from '../../types/formTypes';
+import {IAddFormBase} from "../../../types/formTypes";
+import {useFocus} from "../../../hooks/useFocus";
+
 
 interface IAddForm extends IAddFormBase {
     onClose: () => void;

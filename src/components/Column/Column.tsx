@@ -12,9 +12,7 @@ export const Column = ({id, title, cards}:IColumn) => {
     const {username} = useTypedSelector(state => state.user);
     const cardsView = cards.map(elem => <Card key={elem.id} {...elem}/>)
 
-    const handleTitleChange = (id: string, nextValue: string) => {
-        console.log(nextValue);
-        console.log(id);
+    const handleChange = (id: string, nextValue: string) => {
         dispatch(updateColumnTitle({id, title: nextValue}));
     }
 
@@ -39,7 +37,7 @@ export const Column = ({id, title, cards}:IColumn) => {
                 defaultValue={title}
                 mb="10px"
                 w="full"
-                onSubmit={(nextValue: string) => handleTitleChange(id, nextValue)}
+                onSubmit={(nextValue: string) => handleChange(id, nextValue)}
                 fontWeight="bold"
             >
                 <EditablePreview  w="full"/>

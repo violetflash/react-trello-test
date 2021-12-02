@@ -1,4 +1,4 @@
-import {IColumn} from "../types";
+import {ICard, IColumn} from "../types";
 import {LS_TRELLO_DATA_KEY} from "./constants";
 
 export const getDataFromLS = (): IColumn[] => {
@@ -9,7 +9,7 @@ export const writeDataToLS = (data: IColumn[]) => {
     localStorage.setItem(LS_TRELLO_DATA_KEY, JSON.stringify(data));
 };
 
-export const findColumnIndexById = (id: string, data: IColumn[]) => {
+export const findItemIndexById = (id: string, data: IColumn[] | ICard[]) => {
     return data.findIndex(elem => elem.id === id);
 };
 

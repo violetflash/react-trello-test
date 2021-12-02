@@ -1,10 +1,12 @@
 import React from 'react';
-import {ModalCasing} from "../ui";
-import {Badge, Box, Flex, Text} from "@chakra-ui/react";
-import {useTypedDispatch, useTypedSelector} from "../../hooks/reduxHooks";
-import {closeCard} from "../../redux";
-import {getDataFromLS, getTitleByColumnId} from "../../utils/functions";
-import {AddNewItemButton} from "../AddNewItemButton/AddNewItemButton";
+import {Badge, Box, Flex, Heading, IconButton, Text} from "@chakra-ui/react";
+import {useTypedDispatch, useTypedSelector} from "../../../hooks/reduxHooks";
+import {getDataFromLS, getTitleByColumnId} from "../../../utils/functions";
+import {closeCard, updateCardTitle} from "../../../redux";
+import {ModalCasing} from "../../ui";
+import {AddNewItemButton} from "../../AddNewItemButton/AddNewItemButton";
+import {EditIcon} from "@chakra-ui/icons";
+import {EditableField} from "../../EditableField/EditableField";
 
 export const ModalCardView = () => {
     const dispatch = useTypedDispatch();
@@ -20,13 +22,23 @@ export const ModalCardView = () => {
         dispatch(closeCard());
     }
 
-    const handleAddDescr = () => {
+    const handleAddDescription = () => {
         console.log("Добавить описание карточки")
     }
 
+    const handleTitleChange = (value: string) => {
+        console.log(value);
+        dispatch(updateCardTitle({
+            columnId: card.columnId,
+            cardId: card.id,
+            value
+        }));
+    };
+
     return (
-        <ModalCasing onClose={handleClose} isOpen={isOpened} modalTitle={card.title}>
-            <Flex align="center">в колонке: <Badge colorScheme="green" ml="15px">{title}</Badge></Flex>
+        <ModalCasing onClose={handleClose} isOpen={isOpened}>
+            <EditableField m="30px 0 0" onChange={handleTitleChange} defaultValue={card.title} />
+            <Flex align="center" mb="30px">в колонке: <Badge colorScheme="green" ml="15px">{title}</Badge></Flex>
             <Box>
                 <Text mb="30px">Автор: {card.author ? card.author : "Гость"}</Text>
                 <Text my="10px">Описание:</Text>
@@ -34,7 +46,7 @@ export const ModalCardView = () => {
                     // isDisabled={username !== card.author}
                     variant="description"
                     text={card.description ? card.description : "Добавить более подробное описание"}
-                    onAdd={handleAddDescr}
+                    onAdd={handleAddDescription}
                     placeholder="Добавить более подробное описание"
                     buttonText="Сохранить"
                 />

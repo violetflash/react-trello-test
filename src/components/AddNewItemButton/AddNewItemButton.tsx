@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button} from "@chakra-ui/react";
 import {SmallAddIcon} from "@chakra-ui/icons";
-import {AddForm} from "../AddForm/AddForm";
+import {AddForm} from "../forms";
 import {IAddNewItemButton} from "../../types/formTypes";
 
 
@@ -19,10 +19,13 @@ export const AddNewItemButton = (props: IAddNewItemButton) => {
             <Button
                 isDisabled={props.isDisabled}
                 onClick={() => setShowForm(true)}
-                bg="orange.100"
+                bg="gray.200"
+                py="10px"
                 justifyContent="flex-start"
-                _hover={{bg: "orange.200"}}
+                _hover={{bg: "gray.300"}}
                 color="black"
+                minHeight="80px"
+                alignItems="flex-start"
                 rounded="false"
                 w="full"
             >

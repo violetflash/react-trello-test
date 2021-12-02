@@ -16,6 +16,12 @@ export interface ICardInitialProps {
     author: string;
 }
 
+export interface ICardUpdatingProps {
+    cardId: string;
+    columnId: string;
+    value: string;
+}
+
 export interface ICard extends ICommonProps {
     author: string;
     columnId: string;

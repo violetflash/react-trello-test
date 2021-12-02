@@ -15,7 +15,8 @@ interface IModalProps {
     onAction?: () => void;
     actionTitle?: string;
     onClose: () => void;
-    modalTitle: string;
+    modalTitle?: string;
+    p?: string;
 }
 
 export const ModalCasing: FC<IModalProps> = (
@@ -25,7 +26,8 @@ export const ModalCasing: FC<IModalProps> = (
         onAction,
         actionTitle,
         modalTitle,
-        onClose
+        onClose,
+        p = "0 0 30px",
     }) => {
 
     const secondaryButton =
@@ -35,18 +37,18 @@ export const ModalCasing: FC<IModalProps> = (
     ;
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} >
             <ModalOverlay />
-            <ModalContent>
-                <ModalHeader mt="15px">{modalTitle}</ModalHeader>
+            <ModalContent p={p}>
+                {modalTitle && <ModalHeader mt="15px">{modalTitle}</ModalHeader>}
                 <ModalCloseButton />
                 <ModalBody>
                     {children}
                 </ModalBody>
 
-                <ModalFooter>
+                {onAction && <ModalFooter>
                     {secondaryButton}
-                </ModalFooter>
+                </ModalFooter>}
             </ModalContent>
         </Modal>
     )

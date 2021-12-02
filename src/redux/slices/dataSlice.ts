@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, nanoid, PayloadAction} from '@reduxjs/toolkit';
-import {IAppState, ICardInitialProps, IColumn, ICommonProps, initialCard} from "../../types";
+import {IAppState, ICardInitialProps, ICardUpdatingProps, IColumn, ICommonProps, initialCard} from "../../types";
 import axios from "axios";
-import {findColumnIndexById, getDataFromLS, writeDataToLS} from "../../utils/functions";
+import {findItemIndexById, getDataFromLS, writeDataToLS} from "../../utils/functions";
 
 
 export const getInitialData = createAsyncThunk(
@@ -34,7 +34,7 @@ export const addNewCard = createAsyncThunk(
         try {
             const newCard = {...initialCard, id: nanoid(), ...cardData};
             const data = getDataFromLS();
-            const index = findColumnIndexById(cardData.columnId, data);
+            const index = findItemIndexById(cardData.columnId, data);
             data[index].cards.push(newCard);
             writeDataToLS(data);
             return data;
@@ -49,8 +49,25 @@ export const updateColumnTitle = createAsyncThunk(
     async (columnData: ICommonProps, thunkAPI) => {
         try {
             const data = getDataFromLS();
-            const index = findColumnIndexById(columnData.id, data);
+            const index = findItemIndexById(columnData.id, data);
             data[index].title = columnData.title;
+            writeDataToLS(data);
+            return data;
+        } catch (e: any) {
+            return thunkAPI.rejectWithValue(e.message);
+        }
+    }
+);
+
+export const updateCardTitle = createAsyncThunk(
+    "dataSlice/updateCardTitle",
+    async (cardData: ICardUpdatingProps, thunkAPI) => {
+        try {
+            const data = getDataFromLS();
+            const columnIndex = findItemIndexById(cardData.columnId, data);
+            const cardIndex = findItemIndexById(cardData.cardId, data[columnIndex].cards);
+
+            data[columnIndex].cards[cardIndex].title = cardData.value;
             writeDataToLS(data);
             return data;
         } catch (e: any) {
@@ -101,5 +118,9 @@ export const dataSlice = createSlice({
         [updateColumnTitle.pending.type]: setLoading,
         [updateColumnTitle.fulfilled.type]: setData,
         [updateColumnTitle.rejected.type]: setError,
+
+        [updateCardTitle.pending.type]: setLoading,
+        [updateCardTitle.fulfilled.type]: setData,
+        [updateCardTitle.rejected.type]: setError,
     }
 });
