@@ -76,6 +76,25 @@ export const updateCardTitle = createAsyncThunk(
     }
 );
 
+//ОБЪЕДИНИТЬ ЭТИ 2 thunk, добавить в передаваемый объект поле, которое подлежит обновлению
+
+export const updateCardDescription = createAsyncThunk(
+    "dataSlice/updateCardDescription",
+    async (cardData: ICardUpdatingProps, thunkAPI) => {
+        try {
+            const data = getDataFromLS();
+            const columnIndex = findItemIndexById(cardData.columnId, data);
+            const cardIndex = findItemIndexById(cardData.cardId, data[columnIndex].cards);
+
+            data[columnIndex].cards[cardIndex].description = cardData.value;
+            writeDataToLS(data);
+            return data;
+        } catch (e: any) {
+            return thunkAPI.rejectWithValue(e.message);
+        }
+    }
+);
+
 
 const initialState: IAppState = {
     columns: [],
@@ -122,5 +141,9 @@ export const dataSlice = createSlice({
         [updateCardTitle.pending.type]: setLoading,
         [updateCardTitle.fulfilled.type]: setData,
         [updateCardTitle.rejected.type]: setError,
+
+        [updateCardDescription.pending.type]: setLoading,
+        [updateCardDescription.fulfilled.type]: setData,
+        [updateCardDescription.rejected.type]: setError,
     }
 });

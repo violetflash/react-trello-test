@@ -34,6 +34,7 @@ export const Column = ({id, title, cards}:IColumn) => {
             rounded="md"
         >
             <Editable
+                isDisabled={!username}
                 defaultValue={title}
                 mb="10px"
                 w="full"
@@ -48,6 +49,7 @@ export const Column = ({id, title, cards}:IColumn) => {
             </VStack>
             {/*<AddNewCardButton colId={id}/>*/}
             <AddNewItemButton
+                isDisabled={!username}
                 placeholder="Ввести заголовок для карточки"
                 text="Добавить карточку"
                 onAdd={handleAddCard}

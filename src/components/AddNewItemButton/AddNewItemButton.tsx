@@ -36,6 +36,7 @@ export const AddNewItemButton = (props: IAddNewItemButton) => {
 
     return (
         <Button
+            isDisabled={props.isDisabled}
             onClick={() => setShowForm(true)}
             leftIcon={<SmallAddIcon/>}
             bg="orange.100"

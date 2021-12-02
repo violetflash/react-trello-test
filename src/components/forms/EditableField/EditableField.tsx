@@ -14,10 +14,11 @@ interface IEditable {
     defaultValue: string;
     m?: string;
     onChange: (nextValue: string) => void;
+    isDisabled?: boolean
 }
 
 
-export const EditableField = ({defaultValue, m, onChange}: IEditable) => {
+export const EditableField = ({defaultValue, m, onChange, isDisabled}: IEditable) => {
 
     const EditableControls = () => {
         const {
@@ -54,7 +55,7 @@ export const EditableField = ({defaultValue, m, onChange}: IEditable) => {
                     <EditablePreview />
                     <EditableInput maxW="270px"/>
                 </Box>
-                <EditableControls />
+                {!isDisabled && <EditableControls />}
             </Flex>
 
         </Editable>
