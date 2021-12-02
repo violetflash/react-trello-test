@@ -9,7 +9,9 @@ export const AddNewItemButton = (props: IAddNewItemButton) => {
     const [showForm, setShowForm] = useState<boolean>(false);
 
     if (showForm) {
-        return <AddForm {...props} onClose={() => setShowForm(false)}/>
+        return (
+            <AddForm {...props} isOpen={showForm} onClose={() => setShowForm(false)}/>
+        );
     }
 
     if (props.variant === 'description') {
