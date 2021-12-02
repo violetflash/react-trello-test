@@ -1,10 +1,12 @@
 import {Badge, Box, Flex, Text} from "@chakra-ui/react";
 import {useTypedDispatch, useTypedSelector} from "../../../hooks/reduxHooks";
 import {getDataFromLS, getTitleByColumnId} from "../../../utils/functions";
-import {closeCard, updateCard, updateCardDescription, updateCardTitle} from "../../../redux";
+import {addNewCardComment, closeCard, updateCard, updateCardDescription, updateCardTitle} from "../../../redux";
 import {ModalCasing} from "../../ui";
 import {AddNewItemButton} from "../../AddNewItemButton/AddNewItemButton";
 import {EditableField} from "../../forms";
+import {Comment} from "../../Comment/Comment";
+import {nanoid} from "@reduxjs/toolkit";
 
 
 
@@ -31,7 +33,22 @@ export const ModalCardView = () => {
             ...card,
             description: value
         }))
-    }
+    };
+
+    const handleAddComment = (value: string) => {
+        const newComment = {
+            id: nanoid(),
+            columnId: card.columnId,
+            cardId: card.id,
+            author: username,
+            text: value
+        };
+        dispatch(addNewCardComment(newComment));
+        dispatch(updateCard({
+            ...card,
+            comments: [...card.comments, newComment]
+        }))
+    };
 
     const handleTitleChange = (value: string) => {
         dispatch(updateCardTitle({
@@ -61,6 +78,16 @@ export const ModalCardView = () => {
                     buttonText="Сохранить"
                 />
                 <Text mt="30px">Комментарии:</Text>
+                <AddNewItemButton
+                    isDisabled={!username}
+                    text="Добавить комментарий"
+                    onAdd={handleAddComment}
+                    placeholder="Добавить комментарий"
+                    buttonText="Добавить"
+                />
+                <Box mt="20px">
+                    {[...card.comments].reverse().map(comment => <Comment key={comment.id} {...comment}/>)}
+                </Box>
             </Box>
 
         </ModalCasing>

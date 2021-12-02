@@ -1,5 +1,13 @@
 import {createAsyncThunk, createSlice, nanoid, PayloadAction} from '@reduxjs/toolkit';
-import {IAppState, ICardInitialProps, ICardUpdatingProps, IColumn, ICommonProps, initialCard} from "../../types";
+import {
+    IAddCommentProps,
+    IAppState,
+    ICardInitialProps,
+    ICardUpdatingProps,
+    IColumn,
+    ICommonProps,
+    initialCard
+} from "../../types";
 import axios from "axios";
 import {findItemIndexById, getDataFromLS, writeDataToLS} from "../../utils/functions";
 
@@ -43,6 +51,28 @@ export const addNewCard = createAsyncThunk(
         }
     }
 );
+
+export const addNewCardComment = createAsyncThunk(
+    "dataSlice/addNewCardComment",
+    async (cardData: IAddCommentProps, thunkAPI) => {
+        try {
+            // const newCard = {...initialCard, id: nanoid(), ...cardData};
+            const data = getDataFromLS();
+            const columnIndex = findItemIndexById(cardData.columnId, data);
+            const cardIndex = findItemIndexById(cardData.cardId, data[columnIndex].cards);
+            data[columnIndex].cards[cardIndex].comments.push({
+                id: cardData.id,
+                author: cardData.author,
+                text: cardData.text
+            });
+            writeDataToLS(data);
+            return data;
+        } catch (e: any) {
+            return thunkAPI.rejectWithValue(e.message);
+        }
+    }
+);
+
 
 export const updateColumnTitle = createAsyncThunk(
     "dataSlice/updateColumnTitle",
@@ -145,5 +175,9 @@ export const dataSlice = createSlice({
         [updateCardDescription.pending.type]: setLoading,
         [updateCardDescription.fulfilled.type]: setData,
         [updateCardDescription.rejected.type]: setError,
+
+        [addNewCardComment.pending.type]: setLoading,
+        [addNewCardComment.fulfilled.type]: setData,
+        [addNewCardComment.rejected.type]: setError,
     }
 });

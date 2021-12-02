@@ -1,6 +1,6 @@
 import React from 'react';
 import {ICard} from "../../types";
-import {Box, Flex, HStack, Icon, Text, Tooltip, useColorModeValue} from "@chakra-ui/react";
+import {Box, Flex, HStack, Text, Tooltip, useColorModeValue} from "@chakra-ui/react";
 import {ChatIcon, HamburgerIcon} from '@chakra-ui/icons';
 import {useTypedDispatch} from "../../hooks/reduxHooks";
 import {openCard} from "../../redux";
@@ -33,7 +33,7 @@ export const Card = (props: ICard) => {
                 </Tooltip>
                     // <Icon as={HamburgerIcon} color="gray.500"/>
                 }
-                {props.comments.length === 0 &&
+                {props.comments.length > 0 &&
                 <Tooltip label='Есть комментарии' fontSize='md'>
                   <Flex align="center">
                     <ChatIcon color="gray.500" />

@@ -10,6 +10,14 @@ export interface IComment {
     text: string;
 }
 
+export interface IAddCommentProps {
+    id: string;
+    cardId: string;
+    columnId: string;
+    author: string;
+    text: string;
+}
+
 export interface ICardInitialProps {
     title: string;
     columnId: string;
