@@ -57,17 +57,17 @@ export const Comment = (props: IComment) => {
     }
 
     return (
-        <Flex mb="10px">
+        <Flex mb="20px">
             <UserAvatar username={props.author}/>
             <Box flex="1" ml="10px">
-                <Text>{props.author} пишет:</Text>
+                <Flex><Text as="span" fontWeight="bold" mr="5px">{props.author}</Text> пишет:</Flex>
                 {!showForm &&
                   <>
                     <Text p="5px 15px" bg="gray.200" color="black">{props.text}</Text>
-                    <ButtonGroup size='sm' variant="ghost" isDisabled={username !== props.author}>
+                    {username === props.author && <ButtonGroup size='sm' variant="ghost">
                       <Button onClick={() => setShowForm(true)}>Изменить</Button>
                       <Button onClick={handleOpenAlert}>Удалить</Button>
-                    </ButtonGroup>
+                    </ButtonGroup>}
                   </>
                 }
                 {showForm &&

@@ -1,4 +1,4 @@
-import {Badge, Box, Button, Flex, Menu, MenuButton, MenuItem, MenuList, Text} from "@chakra-ui/react";
+import {Badge, Box, Button, Divider, Flex, Menu, MenuButton, MenuItem, MenuList, Text} from "@chakra-ui/react";
 import {useTypedDispatch, useTypedSelector} from "../../../hooks/reduxHooks";
 import {getDataFromLS, getTitleByColumnId} from "../../../utils/functions";
 import {
@@ -114,7 +114,8 @@ export const ModalCardView = () => {
                     placeholder="Добавить более подробное описание"
                     buttonText="Сохранить"
                 />
-                <Text mt="30px">Комментарии:</Text>
+                <Divider mt="20px"/>
+                <Text mt="20px">Комментарии:</Text>
                 <AddNewItemButton
                     isDisabled={!username}
                     text="Добавить комментарий"

@@ -2,7 +2,6 @@ import React, {useCallback} from 'react';
 import {Editable, EditableInput, EditablePreview, Flex, VStack} from "@chakra-ui/react";
 import {IColumn} from "../../types";
 import {Card} from "../Card/Card";
-// import {AddNewCardButton} from "../AddNewCardButton/AddNewCardButton";
 import {useTypedDispatch, useTypedSelector} from "../../hooks/reduxHooks";
 import {addNewCard, updateColumnTitle} from '../../redux';
 import { AddNewItemButton } from '../AddNewItemButton/AddNewItemButton';
@@ -47,7 +46,6 @@ export const Column = ({id, title, cards}:IColumn) => {
             <VStack mb="15px" w="full">
                 {cardsView}
             </VStack>
-            {/*<AddNewCardButton colId={id}/>*/}
             <AddNewItemButton
                 isDisabled={!username}
                 placeholder="Ввести заголовок для карточки"

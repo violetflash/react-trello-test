@@ -53,7 +53,7 @@ export const addNewCard = createAsyncThunk(
 
 export const deleteCard = createAsyncThunk(
     "dataSlice/deleteCard",
-    async (cardData: {columnId: string, cardId: string,}, thunkAPI) => {
+    async (cardData: { columnId: string, cardId: string, }, thunkAPI) => {
         try {
             const data = getDataFromLS();
             const columnIndex = findItemIndexById(cardData.columnId, data);
@@ -92,7 +92,7 @@ export const addNewCardComment = createAsyncThunk(
 
 export const deleteComment = createAsyncThunk(
     "dataSlice/deleteComment",
-    async (cardData: {id: string; cardId: string; columnId: string}, thunkAPI) => {
+    async (cardData: { id: string; cardId: string; columnId: string }, thunkAPI) => {
         try {
             const data = getDataFromLS();
             const columnIndex = findItemIndexById(cardData.columnId, data);
@@ -129,7 +129,6 @@ export const updateCardTitle = createAsyncThunk(
             const data = getDataFromLS();
             const columnIndex = findItemIndexById(cardData.columnId, data);
             const cardIndex = findItemIndexById(cardData.cardId, data[columnIndex].cards);
-
             data[columnIndex].cards[cardIndex].title = cardData.value;
             writeDataToLS(data);
             return data;
@@ -139,8 +138,6 @@ export const updateCardTitle = createAsyncThunk(
     }
 );
 
-//ОБЪЕДИНИТЬ ЭТИ 2 thunk, добавить в передаваемый объект поле, которое подлежит обновлению
-
 export const updateCardDescription = createAsyncThunk(
     "dataSlice/updateCardDescription",
     async (cardData: ICardUpdatingProps, thunkAPI) => {
@@ -148,7 +145,6 @@ export const updateCardDescription = createAsyncThunk(
             const data = getDataFromLS();
             const columnIndex = findItemIndexById(cardData.columnId, data);
             const cardIndex = findItemIndexById(cardData.cardId, data[columnIndex].cards);
-
             data[columnIndex].cards[cardIndex].description = cardData.value;
             writeDataToLS(data);
             return data;
@@ -182,64 +178,30 @@ const initialState: IAppState = {
     error: null
 };
 
-const setError = (state: IAppState, action: PayloadAction<string>) => {
-    state.isLoading = false;
-    state.error = action.payload;
-};
-
-const setData = (state: IAppState, action: PayloadAction<IColumn[]>) => {
-    state.isLoading = false;
-    state.columns = action.payload;
-};
-
-const setLoading = (state: IAppState) => {
-    state.isLoading = true;
-}
-
-
 export const dataSlice = createSlice({
     name: "dataSlice",
     initialState,
     reducers: {},
-    extraReducers: {
-        [getInitialData.pending.type]: setLoading,
-        [getInitialData.fulfilled.type]: setData,
-        [getInitialData.rejected.type]: setError,
-
-        [setDataFromLS.pending.type]: setLoading,
-        [setDataFromLS.fulfilled.type]: setData,
-        [setDataFromLS.rejected.type]: setError,
-
-        [addNewCard.pending.type]: setLoading,
-        [addNewCard.fulfilled.type]: setData,
-        [addNewCard.rejected.type]: setError,
-
-        [updateColumnTitle.pending.type]: setLoading,
-        [updateColumnTitle.fulfilled.type]: setData,
-        [updateColumnTitle.rejected.type]: setError,
-
-        [updateCardTitle.pending.type]: setLoading,
-        [updateCardTitle.fulfilled.type]: setData,
-        [updateCardTitle.rejected.type]: setError,
-
-        [updateCardDescription.pending.type]: setLoading,
-        [updateCardDescription.fulfilled.type]: setData,
-        [updateCardDescription.rejected.type]: setError,
-
-        [addNewCardComment.pending.type]: setLoading,
-        [addNewCardComment.fulfilled.type]: setData,
-        [addNewCardComment.rejected.type]: setError,
-
-        [deleteCard.pending.type]: setLoading,
-        [deleteCard.fulfilled.type]: setData,
-        [deleteCard.rejected.type]: setError,
-
-        [deleteComment.pending.type]: setLoading,
-        [deleteComment.fulfilled.type]: setData,
-        [deleteComment.rejected.type]: setError,
-
-        [updateComment.pending.type]: setLoading,
-        [updateComment.fulfilled.type]: setData,
-        [updateComment.rejected.type]: setError,
-    }
+    extraReducers: (builder) =>
+        builder
+            .addMatcher(
+                (action) => action.type.endsWith("/pending"),
+                (state) => {
+                    state.isLoading = true;
+                },
+            )
+            .addMatcher(
+                (action) => action.type.endsWith("/fulfilled"),
+                (state, action: PayloadAction<IColumn[]>) => {
+                    state.isLoading = false;
+                    state.columns = action.payload;
+                },
+            )
+            .addMatcher(
+                (action) => action.type.endsWith("/rejected"),
+                (state, action: PayloadAction<string>) => {
+                    state.isLoading = false;
+                    state.error = action.payload;
+                },
+            )
 });

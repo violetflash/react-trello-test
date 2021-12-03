@@ -35,7 +35,7 @@ export const EditableField = ({defaultValue, m, onChange, isDisabled}: IEditable
             </ButtonGroup>
         ) : (
             <Flex justifyContent='center'>
-                <IconButton size='sm' icon={<EditIcon />} {...getEditButtonProps()}  aria-label="редактировать" />
+                <IconButton size='sm' variant="ghost" icon={<EditIcon />} {...getEditButtonProps()}  aria-label="редактировать" />
             </Flex>
         )
     }

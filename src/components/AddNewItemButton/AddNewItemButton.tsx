@@ -4,7 +4,6 @@ import {SmallAddIcon} from "@chakra-ui/icons";
 import {AddForm} from "../forms";
 import {IAddNewItemButton} from "../../types/formTypes";
 
-
 export const AddNewItemButton = (props: IAddNewItemButton) => {
     const [showForm, setShowForm] = useState<boolean>(false);
 

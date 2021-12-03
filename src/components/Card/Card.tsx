@@ -31,7 +31,6 @@ export const Card = (props: ICard) => {
                 <Tooltip label='Есть описание' fontSize='md'>
                   <HamburgerIcon color="gray.600" />
                 </Tooltip>
-                    // <Icon as={HamburgerIcon} color="gray.500"/>
                 }
                 {props.comments.length > 0 &&
                 <Tooltip label='Есть комментарии' fontSize='md'>

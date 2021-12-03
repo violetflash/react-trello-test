@@ -15,7 +15,7 @@ export const App = () => {
             <ModalCardView/>
             <ModalAlert/>
             <Portal>
-                <ColorModeSwitcher position="fixed" right="40px" top="10px"/>
+                <ColorModeSwitcher position="absolute" right="40px" top="30px"/>
             </Portal>
         </ChakraProvider>
     );
